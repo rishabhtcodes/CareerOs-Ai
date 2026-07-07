@@ -1,17 +1,15 @@
-import type { RequestHandler } from "express";
-import { z } from "zod";
+import type { Request, Response } from "express";
 import { createCoachResponse } from "./ai.service";
 
-const coachSchema = z.object({
-  message: z.string().min(2).max(2000)
-});
+export async function coachHandler(req: Request, res: Response) {
+  const userId = req.user!.sub;
+  const { message } = req.body as { message: string };
 
-export const coach: RequestHandler = async (req, res, next) => {
-  try {
-    const payload = coachSchema.parse(req.body);
-    const response = await createCoachResponse(req.user!.sub, payload.message);
-    res.status(200).json(response);
-  } catch (error) {
-    next(error);
+  if (!message?.trim()) {
+    res.status(400).json({ message: "message is required" });
+    return;
   }
-};
+
+  const result = await createCoachResponse(userId, message.trim());
+  res.json(result);
+}
