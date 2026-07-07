@@ -1,0 +1,24 @@
+{
+  "name": "careeros-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CareerOS AI - Personal Career Operating System",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:mobile": "npm --workspace apps/mobile run start --",
+    "dev:api": "npm --workspace apps/api run dev",
+    "lint": "npm --workspaces --if-present run lint",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,22 @@
+# Enforce Unix line endings for all text files in the repo
+* text=auto eol=lf
+
+# Explicitly declare binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.otf binary
+*.pdf binary
+*.zip binary
+*.tgz binary
+*.gz binary
+*.jks binary
+*.p8 binary
+*.p12 binary
+*.mobileprovision binary
