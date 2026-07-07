@@ -76,7 +76,7 @@ careeros-ai/
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/careeros-ai.git
+git clone https://github.com/rishabhtcodes/CareerOs-Ai.git
 cd careeros-ai
 npm install
 ```

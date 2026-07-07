@@ -50,5 +50,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`apps/api/prisma/schema.prisma`** — 17-model career graph with full cascade deletes and indexes
 - **`docs/`** — Architecture, API, Development, and Roadmap documentation
 
-[Unreleased]: https://github.com/YOUR_USERNAME/careeros-ai/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/YOUR_USERNAME/careeros-ai/releases/tag/v0.1.0
+[Unreleased]: https://github.com/rishabhtcodes/CareerOs-Ai/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/rishabhtcodes/CareerOs-Ai/releases/tag/v0.1.0
