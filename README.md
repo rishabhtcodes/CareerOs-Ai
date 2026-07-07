@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.png" width="120" height="120" alt="CareerOS AI Icon" />
+
 <img src="https://img.shields.io/badge/version-0.1.0-8b5cf6?style=for-the-badge" alt="version" />
 <img src="https://img.shields.io/badge/expo-SDK%2051-000020?style=for-the-badge&logo=expo" alt="expo" />
 <img src="https://img.shields.io/badge/node-%3E%3D20-339933?style=for-the-badge&logo=node.js" alt="node" />
