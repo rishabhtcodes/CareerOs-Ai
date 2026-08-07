@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerOS AI — Your Personal Career Operating System</title>
+  <meta name="description" content="CareerOS AI combines AI-powered resume generation, smart job analysis, and an intelligent career coach to transform your career trajectory." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f7ff;
+      color: #1e1b4b;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Design Tokens ────────────────────────────────── */
+    :root {
+      --bg:          #f5f7ff;
+      --bg-soft:     #eff2ff;
+      --card:        #ffffff;
+      --border:      rgba(124, 110, 247, 0.14);
+      --shadow:      0 4px 24px rgba(124, 110, 247, 0.10);
+      --shadow-lg:   0 12px 48px rgba(124, 110, 247, 0.16);
+
+      --violet:      #7c6ef7;
+      --violet-mid:  #9d8df9;
+      --violet-soft: #ede9fe;
+      --violet-pale: #f5f3ff;
+
+      --pink:        #f472b6;
+      --pink-soft:   #fdf2f8;
+      --pink-pale:   #fff0f8;
+
+      --sky:         #60a5fa;
+      --sky-soft:    #eff6ff;
+
+      --mint:        #34d399;
+      --mint-soft:   #ecfdf5;
+
+      --amber:       #fbbf24;
+      --amber-soft:  #fffbeb;
+
+      --text:        #1e1b4b;
+      --text-soft:   #4c4880;
+      --text-muted:  #9591c0;
+
+      --radius-sm:   12px;
+      --radius-md:   18px;
+      --radius-lg:   24px;
+      --radius-xl:   32px;
+    }
+
+    /* ── Utility ──────────────────────────────────────── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Gradient background ──────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 800px 600px at 80% 20%, rgba(124,110,247,0.09) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 500px at 10% 80%, rgba(244,114,182,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 50% 50%, rgba(96,165,250,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+
+    /* ── Navbar ───────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,247,255,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .nav-logo-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(124,110,247,0.07);
+      border-radius: 999px;
+      padding: 6px;
+    }
+    .nav-links a {
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-soft);
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: #fff;
+      color: var(--violet);
+      box-shadow: 0 2px 8px rgba(124,110,247,0.15);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-ghost {
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-soft);
+      border: 1.5px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--violet); color: var(--violet); background: var(--violet-pale); }
+    .btn-primary {
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--violet), #9d8df9);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(124,110,247,0.35);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,110,247,0.4); }
+
+    /* ── Hero ─────────────────────────────────────────── */
+    .hero {
+      padding: 80px 24px 60px;
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+      min-height: calc(100vh - 68px);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--violet-soft);
+      border: 1.5px solid rgba(124,110,247,0.2);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--violet);
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+    .hero-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--violet);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+    .hero-badge-arrow {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      background: var(--violet);
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-title {
+      font-size: clamp(38px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-title .underline-green {
+      position: relative;
+      color: var(--mint);
+      -webkit-text-fill-color: var(--mint);
+    }
+    .hero-title .underline-green::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -4px;
+      width: 100%; height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--mint), #a7f3d0);
+      opacity: 0.6;
+    }
+    .hero-body {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text-soft);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-hero-primary {
+      padding: 15px 30px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--violet) 0%, var(--pink) 100%);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(124,110,247,0.35);
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(124,110,247,0.45); }
+    .btn-hero-secondary {
+      padding: 15px 30px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-soft);
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 12px rgba(124,110,247,0.07);
+    }
+    .btn-hero-secondary:hover { border-color: var(--violet); color: var(--violet); background: var(--violet-pale); }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .hero-stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .hero-stat-divider { width: 1px; background: var(--border); }
+
+    /* ── Hero Dashboard (right panel) ────────────────── */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .dashboard-card {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 2;
+    }
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .dash-title { font-size: 15px; font-weight: 800; color: var(--text); }
+    .dash-dots { display: flex; gap: 6px; }
+    .dash-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dash-dot:nth-child(1) { background: #ff5f57; }
+    .dash-dot:nth-child(2) { background: #febc2e; }
+    .dash-dot:nth-child(3) { background: #28c840; }
+
+    /* ATS Score row */
+    .ats-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, var(--violet-pale), var(--pink-pale));
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(124,110,247,0.12);
+    }
+    .ats-icon {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+    .ats-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 3px; }
+    .ats-value { font-size: 18px; font-weight: 900; color: var(--text); }
+    .ats-score {
+      margin-left: auto;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--violet);
+    }
+
+    /* Progress bar */
+    .progress-row { margin-bottom: 14px; }
+    .progress-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .progress-label { font-size: 13px; font-weight: 600; color: var(--text-soft); }
+    .progress-pct { font-size: 13px; font-weight: 800; color: var(--violet); }
+    .progress-track {
+      height: 8px;
+      border-radius: 99px;
+      background: var(--violet-soft);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--violet), var(--violet-mid));
+      transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .progress-fill.pink { background: linear-gradient(90deg, var(--pink), #f9a8d4); }
+    .progress-fill.mint { background: linear-gradient(90deg, var(--mint), #6ee7b7); }
+
+    /* Skill tags */
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+    .skill-tag {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1.5px solid;
+    }
+    .skill-tag.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(124,110,247,0.25); }
+    .skill-tag.pink   { background: var(--pink-soft);   color: var(--pink);   border-color: rgba(244,114,182,0.25); }
+    .skill-tag.sky    { background: var(--sky-soft);    color: var(--sky);    border-color: rgba(96,165,250,0.25); }
+    .skill-tag.mint   { background: var(--mint-soft);   color: #059669;       border-color: rgba(52,211,153,0.25); }
+    .skill-tag.amber  { background: var(--amber-soft);  color: #d97706;       border-color: rgba(251,191,36,0.25); }
+
+    /* Job match */
+    .match-card {
+      background: var(--mint-soft);
+      border: 1.5px solid rgba(52,211,153,0.2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .match-icon {
+      width: 36px; height: 36px;
+      border-radius: 11px;
+      background: var(--mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .match-label { font-size: 11px; color: #059669; font-weight: 700; }
+    .match-value { font-size: 15px; font-weight: 900; color: var(--text); margin-top: 2px; }
+    .match-score { margin-left: auto; font-size: 22px; font-weight: 900; color: var(--mint); }
+
+    /* AI coach bubble */
+    .coach-bubble {
+      background: linear-gradient(135deg, var(--violet-soft), var(--pink-pale));
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(124,110,247,0.12);
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .coach-avatar {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .coach-text { font-size: 12.5px; line-height: 1.6; color: var(--text-soft); }
+    .coach-text strong { color: var(--violet); }
+
+    /* Floating badges */
+    .float-badge {
+      position: absolute;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      z-index: 3;
+    }
+    .float-badge-icon { font-size: 18px; }
+    .float-badge-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .float-badge-value { font-size: 14px; color: var(--text); font-weight: 800; }
+    .float-badge.top-left  { top: -20px; left: -30px; animation: float1 4s ease-in-out infinite; }
+    .float-badge.bot-right { bottom: -20px; right: -30px; animation: float2 5s ease-in-out infinite; }
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+    /* ── Trust logos ──────────────────────────────────── */
+    .trust-section {
+      max-width: 1180px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .trust-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .trust-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .trust-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+      box-shadow: 0 2px 8px rgba(124,110,247,0.06);
+    }
+    .trust-chip-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+
+    /* ── Features ─────────────────────────────────────── */
+    .features {
+      max-width: 1180px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--violet-soft);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--violet);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .section-body {
+      font-size: 16px;
+      color: var(--text-soft);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+    .features-header { margin-bottom: 50px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.25s;
+      cursor: default;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: transparent;
+    }
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+    .feature-icon.violet { background: var(--violet-soft); }
+    .feature-icon.pink   { background: var(--pink-soft); }
+    .feature-icon.mint   { background: var(--mint-soft); }
+    .feature-icon.sky    { background: var(--sky-soft); }
+    .feature-icon.amber  { background: var(--amber-soft); }
+    .feature-icon.rose   { background: #fff1f2; }
+    .feature-name { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .feature-desc { font-size: 14px; color: var(--text-soft); line-height: 1.65; }
+    .feature-tag {
+      display: inline-flex;
+      margin-top: 16px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .feature-tag.violet { background: var(--violet-soft); color: var(--violet); }
+    .feature-tag.mint   { background: var(--mint-soft); color: #059669; }
+    .feature-tag.pink   { background: var(--pink-soft); color: var(--pink); }
+
+    /* ── How it works ─────────────────────────────────── */
+    .how-section {
+      max-width: 1180px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 50px;
+    }
+    .how-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 22px;
+      position: relative;
+      transition: all 0.25s;
+    }
+    .how-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .how-number {
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      background: var(--violet-soft);
+      color: var(--violet);
+      font-size: 15px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .how-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .how-desc { font-size: 13px; color: var(--text-soft); line-height: 1.6; }
+    .how-arrow {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      font-size: 18px;
+      color: var(--violet-mid);
+      z-index: 2;
+    }
+    .how-card:last-child .how-arrow { display: none; }
+
+    /* ── CTA Section ──────────────────────────────────── */
+    .cta-section {
+      max-width: 1180px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+    .cta-card {
+      background: linear-gradient(135deg, var(--violet) 0%, #b18af5 50%, var(--pink) 100%);
+      border-radius: var(--radius-xl);
+      padding: 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .cta-title { font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #fff; margin-bottom: 16px; letter-spacing: -1px; position: relative; }
+    .cta-body { font-size: 16px; color: rgba(255,255,255,0.82); max-width: 480px; margin: 0 auto 36px; line-height: 1.7; position: relative; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn-cta-white {
+      padding: 15px 32px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--violet);
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.3); }
+    .btn-cta-outline {
+      padding: 15px 32px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-cta-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      background: rgba(245,247,255,0.8);
+    }
+    .footer-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 16px; color: var(--text); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); font-weight: 500; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--violet); }
+    .footer-copy { font-size: 13px; color: var(--text-muted); }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 50px; min-height: auto; }
+      .hero-visual { order: -1; }
+      .dashboard-card { max-width: 100%; }
+      .float-badge.top-left  { top: -12px; left: 10px; }
+      .float-badge.bot-right { bottom: -12px; right: 10px; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .how-grid { grid-template-columns: 1fr 1fr; }
+      .how-arrow { display: none !important; }
+      .cta-card { padding: 48px 28px; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .trust-logos { gap: 8px; }
+    }
+
+    /* ── Scroll animations ────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" id="logo">
+        <div class="nav-logo-dot">C</div>
+        CareerOS AI
+      </a>
+
+      <div class="nav-links" role="list">
+        <a href="#" class="active" role="listitem">Home</a>
+        <a href="#features" role="listitem">Features</a>
+        <a href="#how-it-works" role="listitem">How it works</a>
+        <a href="#" role="listitem">Docs</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-ghost" id="btn-login">Login</button>
+        <button class="btn-primary" id="btn-start">
+          Start Free ✦
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <!-- Left -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        AI-Powered · Gemini 2.0 Flash
+        <div class="hero-badge-arrow">↗</div>
+      </div>
+
+      <h1 class="hero-title" id="hero-heading">
+        Land Your<br />
+        <span class="highlight">Dream Job</span> with<br />
+        Real <span class="underline-green">AI Intelligence</span>
+      </h1>
+
+      <p class="hero-body">
+        CareerOS AI combines Gemini-powered resume generation, intelligent job matching, and a personalized AI career coach to transform your career trajectory.
+      </p>
+
+      <div class="hero-ctas">
+        <button class="btn-hero-primary" id="btn-get-started">
+          Get Started Free →
+        </button>
+        <button class="btn-hero-secondary" id="btn-learn-more">
+          See how it works
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-value">5K+</div>
+          <div class="hero-stat-label">Profiles Built</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div>
+          <div class="hero-stat-value">87%</div>
+          <div class="hero-stat-label">Avg. ATS Score</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div>
+          <div class="hero-stat-value">3×</div>
+          <div class="hero-stat-label">More Interviews</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right – Dashboard preview -->
+    <div class="hero-visual">
+      <!-- Floating badge top-left -->
+      <div class="float-badge top-left">
+        <span class="float-badge-icon">🚀</span>
+        <div>
+          <div class="float-badge-label">Resume Generated</div>
+          <div class="float-badge-value">in 8 seconds</div>
+        </div>
+      </div>
+
+      <!-- Main dashboard card -->
+      <div class="dashboard-card">
+        <div class="dash-header">
+          <div class="dash-title">CareerOS AI Dashboard</div>
+          <div class="dash-dots">
+            <div class="dash-dot"></div>
+            <div class="dash-dot"></div>
+            <div class="dash-dot"></div>
+          </div>
+        </div>
+
+        <!-- ATS score -->
+        <div class="ats-row">
+          <div class="ats-icon">📄</div>
+          <div>
+            <div class="ats-label">AI Resume • Full Stack</div>
+            <div class="ats-value">ATS Readiness Score</div>
+          </div>
+          <div class="ats-score">87</div>
+        </div>
+
+        <!-- Profile strength -->
+        <div class="progress-row">
+          <div class="progress-label-row">
+            <span class="progress-label">Profile Strength</span>
+            <span class="progress-pct">72%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:72%"></div>
+          </div>
+        </div>
+
+        <!-- Job match -->
+        <div class="progress-row">
+          <div class="progress-label-row">
+            <span class="progress-label">Job Match — Google SWE</span>
+            <span class="progress-pct" style="color:var(--mint)">91%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill mint" style="width:91%"></div>
+          </div>
+        </div>
+
+        <!-- Matched skills -->
+        <div class="skills-row">
+          <span class="skill-tag violet">React</span>
+          <span class="skill-tag sky">TypeScript</span>
+          <span class="skill-tag mint">Node.js</span>
+          <span class="skill-tag pink">Prisma</span>
+          <span class="skill-tag amber">PostgreSQL</span>
+          <span class="skill-tag violet">REST APIs</span>
+        </div>
+
+        <!-- Job match card -->
+        <div class="match-card">
+          <div class="match-icon">✓</div>
+          <div>
+            <div class="match-label">MATCHED SKILLS</div>
+            <div class="match-value">6 of 8 required skills</div>
+          </div>
+          <div class="match-score">91%</div>
+        </div>
+
+        <!-- AI Coach bubble -->
+        <div class="coach-bubble">
+          <div class="coach-avatar">🤖</div>
+          <div class="coach-text">
+            <strong>AI Coach:</strong> Add Docker to your skill profile to close the final gap and push your match score above 95%.
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating badge bottom-right -->
+      <div class="float-badge bot-right">
+        <span class="float-badge-icon">⚡</span>
+        <div>
+          <div class="float-badge-label">Applications Tracked</div>
+          <div class="float-badge-value">24 active</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trust logos ────────────────────────────────── -->
+  <div class="trust-section">
+    <div class="trust-label">Powered by world-class technology</div>
+    <div class="trust-logos">
+      <div class="trust-chip">
+        <div class="trust-chip-dot" style="background:#4285f4"></div>
+        Google Gemini
+      </div>
+      <div class="trust-chip">
+        <div class="trust-chip-dot" style="background:#f55036"></div>
+        Groq Llama 3
+      </div>
+      <div class="trust-chip">
+        <div class="trust-chip-dot" style="background:#2d3748"></div>
+        Prisma
+      </div>
+      <div class="trust-chip">
+        <div class="trust-chip-dot" style="background:#61dafb"></div>
+        React Native
+      </div>
+      <div class="trust-chip">
+        <div class="trust-chip-dot" style="background:#000"></div>
+        Expo SDK 51
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Features ───────────────────────────────────── -->
+  <section class="features" id="features" aria-labelledby="features-heading">
+    <div class="features-header reveal">
+      <div class="section-badge">✦ Features</div>
+      <h2 class="section-title" id="features-heading">Everything your career needs</h2>
+      <p class="section-body">A complete operating system for your professional growth — from profile to offer letter.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon violet">🧑‍💼</div>
+        <div class="feature-name">Master Career Profile</div>
+        <div class="feature-desc">One unified profile — experience, education, skills, projects, achievements, and GitHub stats — that powers everything else.</div>
+        <span class="feature-tag violet">Phase 2 ✓</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon pink">📄</div>
+        <div class="feature-name">AI Resume Generation</div>
+        <div class="feature-desc">Gemini 2.0 Flash writes tailored, ATS-optimized resumes from your full profile in seconds. Frontend, fullstack, AI engineer, and custom types.</div>
+        <span class="feature-tag pink">Gemini Powered</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon mint">🔍</div>
+        <div class="feature-name">Job Intelligence</div>
+        <div class="feature-desc">Paste any job description. AI extracts matched skills, missing skills, and gives you specific improvement suggestions to close the gap.</div>
+        <span class="feature-tag mint">AI Analyzed</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon sky">📊</div>
+        <div class="feature-name">Application Tracker</div>
+        <div class="feature-desc">Track every application through the full pipeline: Saved → Applied → Screening → Interview → Offer. Never lose track of a lead.</div>
+        <span class="feature-tag violet">Full CRUD</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon amber">🤖</div>
+        <div class="feature-name">AI Career Coach</div>
+        <div class="feature-desc">Your profile-aware personal mentor. Ask anything — get a 30-day roadmap, interview prep, skill gap analysis, or tailored project ideas.</div>
+        <span class="feature-tag pink">Gemini + Groq</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon rose">🐙</div>
+        <div class="feature-name">GitHub Profile Import</div>
+        <div class="feature-desc">Connect GitHub to automatically pull repos, stars, top languages, and commit activity into your career profile — boosting recruiter trust.</div>
+        <span class="feature-tag mint">Auto Sync</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it works ───────────────────────────────── -->
+  <section class="how-section" id="how-it-works" aria-labelledby="how-heading">
+    <div class="reveal">
+      <div class="section-badge">✦ How it works</div>
+      <h2 class="section-title" id="how-heading">From profile to offer in 4 steps</h2>
+      <p class="section-body">CareerOS AI is designed to do the heavy lifting so you can focus on what matters — growing.</p>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card reveal reveal-delay-1">
+        <div class="how-number">1</div>
+        <div class="how-title">Build your profile</div>
+        <div class="how-desc">Add your experience, education, skills, and projects. Connect GitHub for automatic stats. Takes 10 minutes.</div>
+        <div class="how-arrow">→</div>
+      </div>
+      <div class="how-card reveal reveal-delay-2">
+        <div class="how-number">2</div>
+        <div class="how-title">Generate AI resumes</div>
+        <div class="how-desc">Choose a resume type. Gemini 2.0 Flash writes a tailored, ATS-scored resume from your profile in under 10 seconds.</div>
+        <div class="how-arrow">→</div>
+      </div>
+      <div class="how-card reveal reveal-delay-3">
+        <div class="how-number">3</div>
+        <div class="how-title">Analyze job matches</div>
+        <div class="how-desc">Paste a job description. AI gives you a match score, matched skills, missing skills, and specific suggestions instantly.</div>
+        <div class="how-arrow">→</div>
+      </div>
+      <div class="how-card reveal reveal-delay-4">
+        <div class="how-number">4</div>
+        <div class="how-title">Track and coach</div>
+        <div class="how-desc">Track every application in the pipeline. Ask your AI coach for interview prep, roadmaps, and real-time career advice.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────── -->
+  <section class="cta-section">
+    <div class="cta-card reveal">
+      <h2 class="cta-title">Ready to accelerate your career?</h2>
+      <p class="cta-body">Join thousands of developers who use CareerOS AI to land better roles, faster. Free to start — no credit card required.</p>
+      <div class="cta-buttons">
+        <button class="btn-cta-white" id="btn-cta-main">Get Started Free →</button>
+        <button class="btn-cta-outline" id="btn-cta-docs">View Docs</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="nav-logo-dot">C</div>
+        CareerOS AI
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#">Docs</a>
+        <a href="#">GitHub</a>
+        <a href="#">Changelog</a>
+        <a href="#">Security</a>
+        <a href="#">Contributing</a>
+      </nav>
+      <div class="footer-copy">MIT © 2026 CareerOS AI</div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──────────────────────────────────
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Progress bar animation on load ────────────────
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.progress-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0%';
+          requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = w; }));
+        });
+      }, 300);
+    });
+
+    // ── Active nav link on scroll ──────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-links a');
+    const scrollSpy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach(s => scrollSpy.observe(s));
+
+    // ── Smooth scroll for nav links ───────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        const id = anchor.getAttribute('href');
+        if (id && id.length > 1) {
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
