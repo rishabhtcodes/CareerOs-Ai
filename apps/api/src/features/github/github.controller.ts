@@ -8,10 +8,10 @@ function mapProfile(p: any) {
     id: p.id,
     username: p.username,
     avatarUrl: p.profileUrl,
-    repoCount: p.repositories || 0,
+    repoCount: p.repositories ? JSON.parse(p.repositories) : 0,
     totalStars: p.stars || 0,
-    totalCommits: p.contributions || 0,
-    topLanguages: p.languages || [],
+    totalCommits: p.contributions ? JSON.parse(p.contributions) : 0,
+    topLanguages: p.languages ? JSON.parse(p.languages) : [],
     syncedAt: p.lastSyncedAt || p.updatedAt,
   };
 }

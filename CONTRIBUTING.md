@@ -106,7 +106,7 @@ Be respectful, inclusive, and constructive in all interactions. Harassment of an
 ```
 
 **Types:** `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`  
-**Scopes:** `api`, `mobile`, `shared`, `prisma`, `auth`, `resume`, `jobs`, `ai`, `profile`
+**Scopes:** `api`, `mobile`, `shared`, `prisma`, `auth`, `resume`, `jobs`, `ai`, `profile`, `github`, `coach`, `dashboard`
 
 ---
 
