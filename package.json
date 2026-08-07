@@ -1,8 +1,8 @@
 {
   "name": "careeros-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "CareerOS AI - Personal Career Operating System",
+  "description": "CareerOS AI — Premium mobile-first personal career operating system",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -12,7 +12,11 @@
     "dev:api": "npm --workspace apps/api run dev",
     "lint": "npm --workspaces --if-present run lint",
     "typecheck": "npm --workspaces --if-present run typecheck",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:generate": "npx prisma generate --schema apps/api/prisma/schema.prisma",
+    "db:migrate": "npm --workspace apps/api run prisma:migrate",
+    "db:studio": "npx prisma studio --schema apps/api/prisma/schema.prisma",
+    "db:reset": "npx prisma migrate reset --schema apps/api/prisma/schema.prisma"
   },
   "devDependencies": {
     "@expo/cli": "^57.0.5",
