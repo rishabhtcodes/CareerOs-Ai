@@ -4,14 +4,19 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@careeros/shared": ["../../packages/shared/src"]
+      "@/*": [
+        "src/*"
+      ],
+      "@careeros/shared": [
+        "../../packages/shared/src"
+      ]
     }
   },
   "include": [
     "app",
     "src",
     "expo-env.d.ts",
-    "../../packages/shared/src"
+    "../../packages/shared/src",
+    ".expo/types/**/*.ts"
   ]
 }
