@@ -1,10 +1,11 @@
 import type { RequestHandler } from "express";
+import { readResumes, readResumeById, createResumeDraft } from "./resume.service";
 import { z } from "zod";
-import { createResumeDraft, readResumes } from "./resume.service";
+import { ApiError } from "../../middleware/errorHandler";
 
-const generateResumeSchema = z.object({
+const generateSchema = z.object({
   type: z.enum(["frontend", "fullstack", "python", "ai", "custom"]),
-  targetJobDescription: z.string().optional()
+  targetJobDescription: z.string().max(3000).optional()
 });
 
 export const listResumes: RequestHandler = async (req, res, next) => {
@@ -16,9 +17,19 @@ export const listResumes: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const getResume: RequestHandler = async (req, res, next) => {
+  try {
+    const resume = await readResumeById(req.user!.sub, req.params.id);
+    if (!resume) return next(new ApiError(404, "Resume not found"));
+    res.status(200).json(resume);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const generateResume: RequestHandler = async (req, res, next) => {
   try {
-    const payload = generateResumeSchema.parse(req.body);
+    const payload = generateSchema.parse(req.body);
     const resume = await createResumeDraft(req.user!.sub, payload);
     res.status(201).json(resume);
   } catch (error) {
