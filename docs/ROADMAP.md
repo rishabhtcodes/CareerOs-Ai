@@ -1,48 +1,79 @@
 # CareerOS AI Roadmap
 
-## Phase 1: Product Foundation
+## Phase 1: Product Foundation ✅
 
-- Premium Expo mobile shell
-- Dashboard, jobs, resume, AI coach, and profile screens
-- Express API skeleton
-- Prisma career graph
-- JWT auth
+- [x] Premium Expo mobile shell with glassmorphism dark design
+- [x] Dashboard, jobs, resume, AI coach, and profile tab screens
+- [x] Express 4 API skeleton with Helmet, CORS, Morgan
+- [x] Prisma 5 career graph schema (17 models, SQLite dev / PostgreSQL prod)
+- [x] JWT authentication (register + login + bcrypt, 7-day tokens)
+- [x] Reusable UI components: GlassCard, GradientButton, StatCard, SectionHeader, Skeleton, EmptyState
+- [x] TanStack React Query hooks for server state
+- [x] Auth context with SecureStore JWT persistence
 
-## Phase 2: Profile Operating System
+---
 
-- Profile editor
-- Education, experience, skills, projects, certifications, achievements, social links
-- Profile strength scoring
-- GitHub import
+## Phase 2: Profile Operating System ✅
 
-## Phase 3: Resume Intelligence
+- [x] Personal details editor (headline, bio, location, target role)
+- [x] Experience entries — full CRUD with highlights list
+- [x] Education entries — full CRUD with date ranges
+- [x] Skills — bulk replace with category and level
+- [x] Projects — full CRUD with tech stack, URL, repo, impact
+- [x] Achievements — full CRUD
+- [x] Certificates — add/delete
+- [x] Social links — add/delete
+- [x] GitHub profile import — repos, stars, languages, commits stats
+- [x] Profile strength scoring (computed from filled sections)
 
-- Resume templates
-- AI generation
-- ATS scoring
-- PDF/DOCX export
-- Resume version history
+---
 
-## Phase 4: Job Intelligence
+## Phase 3: Resume Intelligence ✅
 
-- Job URL parser
-- Job description analyzer
-- Match scoring
-- Missing skill detection
-- Application tracker and reminders
+- [x] Gemini 2.0 Flash AI resume generation — role-tailored markdown
+- [x] Rich prompt with full profile context (experience, projects, education, achievements)
+- [x] Real ATS scoring — keyword density analysis against job description
+- [x] Resume detail view (`GET /api/resume/:id`)
+- [x] 5 resume types: frontend · fullstack · python · ai · custom
+- [x] Graceful fallback to structured template when API key is absent
+- [ ] PDF / DOCX export
+- [ ] Resume version history and diff view
 
-## Phase 5: AI Career Coach
+---
 
-- Gemini and Groq adapters
-- Roadmap generation
-- Skill gap analysis
-- Project recommendations
-- Interview preparation
+## Phase 4: Job Intelligence ✅
 
-## Phase 6: Growth Features
+- [x] Application tracker — full CRUD (create, update status, delete)
+- [x] Status pipeline: SAVED → APPLIED → SCREENING → INTERVIEW → OFFER → REJECTED
+- [x] Gemini-powered job description analyzer — matched skills, missing skills, suggestions
+- [x] Keyword fallback when Gemini is unavailable
+- [x] Match score calculation
+- [ ] Job URL parser (auto-extract description from a URL)
+- [ ] Application reminders and follow-up nudges
 
-- Notifications
-- Calendar sync
-- LinkedIn integration
-- Recruiter dashboard
-- Team collaboration
+---
+
+## Phase 5: AI Career Coach ✅
+
+- [x] Gemini 2.0 Flash adapter with richer profile context
+- [x] Groq (Llama 3) adapter — automatic fallback
+- [x] Local deterministic fallback (works fully offline)
+- [x] Conversation history persisted to `AIHistory` table
+- [x] `GET /api/ai/history` endpoint
+- [x] Suggested prompts in chat welcome state
+- [ ] Roadmap generation (structured weekly/monthly plans)
+- [ ] Interview preparation mode
+- [ ] Skill gap analysis with recommended learning resources
+
+---
+
+## Phase 6: Growth Features 📋
+
+- [ ] In-app notification system (bell feed, mark read)
+- [ ] Push notification scheduling for application follow-ups
+- [ ] Google Calendar sync for interview reminders
+- [ ] LinkedIn profile import
+- [ ] PDF / DOCX resume export with template selection
+- [ ] Resume sharing links (public/private)
+- [ ] Recruiter dashboard view
+- [ ] Team collaboration mode
