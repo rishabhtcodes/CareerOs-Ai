@@ -15,6 +15,22 @@ out/
 !.env.example
 !.env.local.example
 
+# ── SQLite database (dev only) ────────────────────────────────
+# Generated at runtime — never commit real data
+apps/api/prisma/dev.db
+apps/api/prisma/dev.db-journal
+apps/api/prisma/dev.db-shm
+apps/api/prisma/dev.db-wal
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# ── Prisma generated client ───────────────────────────────────
+# Keep migration history tracked — only exclude generated client
+# apps/api/prisma/migrations/   ← intentionally tracked
+apps/api/node_modules/
+
 # ── Expo / React Native ───────────────────────────────────────
 .expo/
 apps/mobile/.expo/
@@ -26,6 +42,8 @@ expo-env.d.ts
 *.mobileprovision
 *.orig.*
 web-build/
+android/
+ios/
 
 # ── Logs ──────────────────────────────────────────────────────
 *.log
@@ -33,24 +51,24 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 
 # ── Test & Coverage ───────────────────────────────────────────
 coverage/
 .nyc_output/
+__snapshots__/
 
 # ── Turbo ─────────────────────────────────────────────────────
 .turbo/
 
-# ── Prisma ────────────────────────────────────────────────────
-# Keep migration history tracked — only exclude generated client
-# apps/api/prisma/migrations/   ← intentionally tracked
-apps/api/node_modules/
-
 # ── OS & Editor ───────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+Desktop.ini
 .idea/
 .vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
 *.swp
 *.swo
 *~
@@ -59,3 +77,9 @@ Thumbs.db
 .cache/
 tmp/
 temp/
+outputs/
+
+# ── AI / Agent artifacts ──────────────────────────────────────
+.agents/
+.codex/
+work/
