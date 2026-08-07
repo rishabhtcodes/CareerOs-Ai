@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import { createCoachResponse, getCoachHistory } from "./ai.service";
+import { getAllProviderInfo } from "./providers/registry";
 import { z } from "zod";
 
 const coachSchema = z.object({ message: z.string().min(1).max(1000) });
@@ -19,6 +20,15 @@ export const history: RequestHandler = async (req, res, next) => {
     const limit = Math.min(50, parseInt(req.query.limit as string ?? "20") || 20);
     const items = await getCoachHistory(req.user!.sub, limit);
     res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const providers: RequestHandler = async (_req, res, next) => {
+  try {
+    const info = getAllProviderInfo();
+    res.status(200).json(info);
   } catch (error) {
     next(error);
   }
