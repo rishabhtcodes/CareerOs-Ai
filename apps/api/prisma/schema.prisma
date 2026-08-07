@@ -2,27 +2,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-enum ApplicationStatus {
-  SAVED
-  APPLIED
-  SCREENING
-  INTERVIEW
-  OFFER
-  REJECTED
-}
 
-enum ResumeType {
-  FRONTEND
-  FULLSTACK
-  PYTHON
-  AI
-  CUSTOM
-}
 
 model User {
   id              String            @id @default(cuid())
@@ -79,7 +69,7 @@ model Experience {
   endDate     DateTime?
   current     Boolean   @default(false)
   description String?
-  highlights  String[]  @default([])
+  highlights  String    @default("[]")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -94,7 +84,7 @@ model Project {
   summary     String
   url         String?
   repository  String?
-  techStack   String[]  @default([])
+  techStack   String    @default("[]")
   impact      String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -158,7 +148,7 @@ model SocialLink {
 model ResumeTemplate {
   id          String            @id @default(cuid())
   name        String
-  type        ResumeType
+  type        String
   description String?
   isPremium   Boolean           @default(false)
   createdAt   DateTime          @default(now())
@@ -173,7 +163,7 @@ model GeneratedResume {
   title      String
   type       String
   atsScore   Int             @default(0)
-  content    Json
+  content    String
   pdfUrl     String?
   docxUrl    String?
   createdAt  DateTime        @default(now())
@@ -190,7 +180,7 @@ model Application {
   company     String
   role        String
   sourceUrl   String?
-  status      ApplicationStatus @default(SAVED)
+  status      String @default("SAVED")
   matchScore  Int?
   notes       String?
   appliedAt   DateTime?
@@ -207,9 +197,9 @@ model JobAnalysis {
   sourceUrl       String?
   description     String
   matchScore      Int
-  extractedSkills String[] @default([])
-  missingSkills   String[] @default([])
-  suggestions     String[] @default([])
+  extractedSkills String   @default("[]")
+  missingSkills   String   @default("[]")
+  suggestions     String   @default("[]")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -222,9 +212,9 @@ model GithubProfile {
   userId        String   @unique
   username      String
   profileUrl    String
-  repositories  Json?
-  languages     Json?
-  contributions Json?
+  repositories  String?
+  languages     String?
+  contributions String?
   stars         Int      @default(0)
   lastSyncedAt  DateTime?
   createdAt     DateTime @default(now())
@@ -264,7 +254,7 @@ model AIHistory {
   prompt    String
   response  String
   provider  String
-  metadata  Json?
+  metadata  String?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
