@@ -260,3 +260,26 @@ model AIHistory {
 
   @@index([userId, createdAt])
 }
+
+/// Auto-generated market intelligence report (runs every 8 hours)
+model MarketIntelligence {
+  id             String   @id @default(cuid())
+  generatedAt    DateTime @default(now())
+  provider       String
+  /// AI-written market pulse paragraph
+  marketPulse    String
+  /// JSON array of { rank, name, category, score }
+  topTech        String
+  /// JSON array of skill names sorted by demand
+  risingSkills   String
+  /// JSON array of cooling skill names
+  decliningSkills String
+  /// JSON array of hot job roles
+  hotRoles       String
+  /// JSON array of career advice strings
+  careerAdvice   String
+  /// JSON summary of raw data stats
+  rawSummary     String
+
+  @@index([generatedAt])
+}

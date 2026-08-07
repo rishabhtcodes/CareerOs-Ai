@@ -6,6 +6,7 @@ import { jobsRouter } from "./jobs.routes";
 import { profileRouter } from "./profile.routes";
 import { resumeRouter } from "./resume.routes";
 import { githubRouter } from "./github.routes";
+import { intelligenceRouter } from "./intelligence.routes";
 
 export const apiRouter = Router();
 
@@ -16,3 +17,4 @@ apiRouter.use("/resume", resumeRouter);
 apiRouter.use("/jobs", jobsRouter);
 apiRouter.use("/ai", aiRouter);
 apiRouter.use("/github", githubRouter);
+apiRouter.use("/intelligence", intelligenceRouter);
